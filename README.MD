@@ -19,3 +19,8 @@ npm install jsonwebtoken --save
     ```
      ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'password'; 
     ```
+
+* 2022-09-23
+    * DB pool 대충 구현
+    * postman으로 값전송시 가입가능한 id 인지 판별하는걸로 query 작동여부 판단.
+    * dotEnv로 DB정보 가리기
