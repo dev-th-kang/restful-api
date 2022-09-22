@@ -13,3 +13,9 @@ npm install jsonwebtoken --save
   * 회원가입 api 구현
   * rest규정에 맞춰서 정리
   * 위의 구성과정 이후 passport 사용
+
+* DB 오류 발생시, 비밀번호를 변경해줘야한다. 아래 구문 이용 
+    
+    ```
+     ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'password'; 
+    ```
