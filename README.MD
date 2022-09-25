@@ -24,3 +24,12 @@ npm install jsonwebtoken --save
     * DB pool 대충 구현
     * postman으로 값전송시 가입가능한 id 인지 판별하는걸로 query 작동여부 판단.
     * dotEnv로 DB정보 가리기
+
+* 2022-09-25
+    * 미들웨어에 대한 개념 부족
+    * 프로미스, 콜백 함수에 대한 개념 부족
+    * 동기 비동기, 기초문법 개념 부족
+    * 추가적인 공부이후 다시 passport 공부 도전할 것
+    * 목표 약간 수정 passport-local로 먼저 한다음에 passport-jwt를 이용해서 토큰인증방식으로 변경
+    * 모든게 다 끝나면, typescript 도 사용하고, 프론트엔드 연결시켜보기
+    * axio 공부하기

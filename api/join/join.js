@@ -8,9 +8,9 @@ routes.post("/valid-id", (req,res)=>{
     let userid = req.body.userid;
     db.query(`select * from test WHERE userid = "${userid}"`, (err, results)=>{
         if(results.length == 0 ){
-            res.send({isvalid:true});
+            res.status(400).send({isvalid:true});
         }else{
-            res.send({isvalid:false});
+            res.status(200).send({isvalid:false});
         }
     })
 })
@@ -23,10 +23,10 @@ routes.post("/", (req,res)=>{
     if(userInfo.isvalid){
         db.query(`insert into test(username,userid,userpw,email) values ("${userInfo.username}","${userInfo.userid}","${userInfo.userpw}","${userInfo.email}")`,(err, results)=>{
             if(err)throw err;
-            res.send({state:"success"});
+            res.status(400).send({state:"success"});
         });
     }else{
-        res.send({state:"fail"});
+        res.status(200).send({state:"fail"});
     }
 })
 
