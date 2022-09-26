@@ -21,10 +21,12 @@ routes.post("/", (req,res)=>{
     //let userName = req.body.userName;
     let userInfo = req.body;
     if(userInfo.isvalid){
+        db.connect();
         db.query(`insert into test(username,userid,userpw,email) values ("${userInfo.username}","${userInfo.userid}","${userInfo.userpw}","${userInfo.email}")`,(err, results)=>{
             if(err)throw err;
             res.status(400).send({state:"success"});
         });
+        db.end();
     }else{
         res.status(200).send({state:"fail"});
     }
