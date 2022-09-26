@@ -11,6 +11,7 @@ routes.post('/', function(req, res, next) {
     //passport 로 passport-local 로 로그인 진행 (먼저 passport 미들웨어로 들어감)
     passport.authenticate('local-login', function(err, user, info) {
 		if(err) res.status(500).json(err);
+        console.log(user)
 		if (!user) return res.status(401).json({state:"login fail"});
 
 		req.logIn(user, function(err) {
@@ -27,8 +28,8 @@ passport.serializeUser(function(user, done) {
 
 passport.deserializeUser(function(username, done) {
 	console.log('passport session get id: ', username)
-	done(null, id);
-})
+	done(null, username);
+})  
 
 // passport 미들웨어 username과 password Field의 이름을 말해준뒤 req값과 id, password값으로 받는다. 
 passport.use('local-login', new LocalStrategy({
@@ -36,16 +37,14 @@ passport.use('local-login', new LocalStrategy({
     passwordField: 'password',
     passReqToCallback : true
 }, function(req, id, password, done) {
-    console.log(id);
-    console.log(password);
+    //console.log(id);
+    //console.log(password);
     //db로 체크 회원인지 아닌지
+    
     db.query(`select * from test where userid ='${id}' && userpw = '${password}'`, (err,rows)=>{
         if(err) return done(err);
-        if(rows.length) {
-            return done(null, {'username' : id, 'password':password})
-        } else {
-            return done(null, false, {'message' : 'Incorrect id or password'})
-        }
+        if(rows.length) return done(null, {'username' : id, 'password':password})
+        else return done(null, false, {'message' : 'Incorrect id or password'})
     })
 }
 ));
