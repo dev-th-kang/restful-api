@@ -1,6 +1,6 @@
 const express = require('express');
 const passport  = require('passport');
-var LocalStrategy = require('passport-local').Strategy
+const LocalStrategy = require('passport-local').Strategy
 const db = require('../../config/db');
 const routes = express.Router();
 const cors = require('cors');
@@ -9,41 +9,49 @@ const cors = require('cors');
 routes.post('/', function(req, res, next) {
     //passport화해서 묶기
     //passport 로 passport-local 로 로그인 진행 (먼저 passport 미들웨어로 들어감)
-    passport.authenticate('local-login', function(err, user, info) {
+    passport.authenticate('local-login', function(err, userinfo, msg) {
+        //console.log("11");
 		if(err) res.status(500).json(err);
-        console.log(user)
-		if (!user) return res.status(401).json({state:"login fail"});
+		if (!userinfo) return res.status(401).json({state:"login fail"});
 
-		req.logIn(user, function(err) {
+		req.logIn(userinfo, function(err) {
         if (err) { return res.status(401).json({state:"login fail"}); }
-        return res.json(user);
+        return res.json(userinfo);
     });
 
 	})(req, res, next);
 })
-passport.serializeUser(function(user, done) {
-	console.log('passport session save : ', user.username);
-    done(null, user.username)
+passport.serializeUser((user,done)=>{
+    console.log(`${user.username} session save`);
+    done(null, user);
 });
-
-passport.deserializeUser(function(username, done) {
-	console.log('passport session get id: ', username)
-	done(null, username);
-})  
+passport.deserializeUser((user,done)=>{
+    console.log(`${user.username} session get`);
+    done(null, user);
+});
 
 // passport 미들웨어 username과 password Field의 이름을 말해준뒤 req값과 id, password값으로 받는다. 
 passport.use('local-login', new LocalStrategy({
-    usernameField: 'username',
-    passwordField: 'password',
+    usernameField: 'userid',
+    passwordField: 'userpw',
     passReqToCallback : true
-}, function(req, id, password, done) {
+}, function(req, userid, userpw, done) {
     //console.log(id);
     //console.log(password);
     //db로 체크 회원인지 아닌지
     
-    db.query(`select * from test where userid ='${id}' && userpw = '${password}'`, (err,rows)=>{
+    db.query(`select * from test where userid ='${userid}' && userpw = '${userpw}'`, (err,rows)=>{
         if(err) return done(err);
-        if(rows.length) return done(null, {'username' : id, 'password':password})
+        const info ={   username :rows[0].username,
+                        email:rows[0].email };
+        //console.log(info)
+        if(rows.length) 
+            return done(null, {
+                "username":info.username,
+                "userid":userid,
+                "userpw":userpw,
+                "email":info.email
+            });
         else return done(null, false, {'message' : 'Incorrect id or password'})
     })
 }
