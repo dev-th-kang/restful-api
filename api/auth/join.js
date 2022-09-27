@@ -3,8 +3,11 @@ const db = require('../../config/db');
 const routes = express.Router();
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
+<<<<<<< HEAD
 require('../../passport/serialize');
 require('../../passport/passport')(passport);
+=======
+>>>>>>> a590e39e7ac2cdd98efad13ea912dee80cdcd099
 
 //TODO: 아이디 유효성 검사(중복확인)
 // routes.post("/valid-id", (req,res)=>{
@@ -47,7 +50,45 @@ routes.post('/', (req,res,next)=>{
     })(req,res,next);
 })
 
+<<<<<<< HEAD
 
 
 
+=======
+passport.serializeUser((user,done)=>{
+    console.log(`${user.username} session save`);
+    done(null, user);
+});
+passport.deserializeUser((user,done)=>{
+    console.log(`${user.username} session get`);
+    done(null, user);
+});
+
+passport.use('local-join',new LocalStrategy({
+    usernameField:"userid",
+    passwordField:"userpw",
+    passReqToCallback:true
+},(req,userid,userpw,done)=>{
+    const {username,email} = req.body;
+    db.query(`select * from test where userid="${userid}"`,(err,rows)=>{
+        if(!rows.length){
+            db.query(`insert into test values("${username}","${userid}","${userpw}","${email}")`,(err,results)=>{
+                if(results.affectedRows){
+                    return done(null, {
+                        "username":username,
+                        "userid":userid,
+                        "userpw":userpw,
+                        "email":email
+                    });
+                }else{
+                    return done(null, false,{"msg":"registration was not processed properly"});
+                }
+            })
+        }else{
+            return done(null, false, {"msg":"ID already exists"});
+        }
+    })
+    //valid - userid
+}))
+>>>>>>> a590e39e7ac2cdd98efad13ea912dee80cdcd099
 module.exports = routes;
