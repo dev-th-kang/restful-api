@@ -3,6 +3,11 @@ const db = require('../../config/db');
 const routes = express.Router();
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
+<<<<<<< HEAD
+require('../../passport/serialize');
+require('../../passport/passport')(passport);
+=======
+>>>>>>> a590e39e7ac2cdd98efad13ea912dee80cdcd099
 
 //TODO: 아이디 유효성 검사(중복확인)
 // routes.post("/valid-id", (req,res)=>{
@@ -45,6 +50,11 @@ routes.post('/', (req,res,next)=>{
     })(req,res,next);
 })
 
+<<<<<<< HEAD
+
+
+
+=======
 passport.serializeUser((user,done)=>{
     console.log(`${user.username} session save`);
     done(null, user);
@@ -80,4 +90,5 @@ passport.use('local-join',new LocalStrategy({
     })
     //valid - userid
 }))
+>>>>>>> a590e39e7ac2cdd98efad13ea912dee80cdcd099
 module.exports = routes;

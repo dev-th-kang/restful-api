@@ -4,7 +4,8 @@ const LocalStrategy = require('passport-local').Strategy
 const db = require('../../config/db');
 const routes = express.Router();
 const cors = require('cors');
-
+require('../../passport/serialize');
+require('../../passport/passport')(passport);
 //FIXME: 로그인 JWT 포함하고, 토큰넘겨주기 
 routes.post('/', function(req, res, next) {
     //passport화해서 묶기
@@ -21,6 +22,10 @@ routes.post('/', function(req, res, next) {
 
 	})(req, res, next);
 })
+<<<<<<< HEAD
+// passport 미들웨어 username과 password Field의 이름을 말해준뒤 req값과 id, password값으로 받는다. 
+
+=======
 passport.serializeUser((user,done)=>{
     console.log(`${user.username} session save`);
     done(null, user);
@@ -56,5 +61,6 @@ passport.use('local-login', new LocalStrategy({
     })
 }
 ));
+>>>>>>> a590e39e7ac2cdd98efad13ea912dee80cdcd099
 
 module.exports = routes;

@@ -10,7 +10,9 @@ const routes = express.Router();
 routes.use('/users',users);
 
 //TODO: 인증 파트
+
 routes.use('/auth/join', join);
 routes.use('/auth/login', login);
 routes.use('/auth/logout', logout);
+
 module.exports = routes;
