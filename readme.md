@@ -7,16 +7,16 @@
     <img src="https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white"> 
     <img src="https://img.shields.io/badge/node.js-339933?style=for-the-badge&logo=Node.js&logoColor=white">
 
-
-|url|Method|Req|
-|:---|:---|:---|
-|[/auth/api/join](./back-end/api/auth/join.js)|POST|{msg or sate, userinfo:{null or username, userid, userpw, email}}|
-|[/auth/api/login](./back-end/api/auth/login.js)|POST|{token,msg}
-|[/users](./back-end/api/users/users.js)|GET|{tokenIssurance, loginState, msg, token}
+* ### api
+    |url|Method|Req|
+    |:---|:---|:---|
+    |[/auth/api/join](./back-end/api/auth/join.js)|POST|{msg or sate, userinfo:{null or username, userid, userpw, email}}|
+    |[/auth/api/login](./back-end/api/auth/login.js)|POST|{token,msg}
+    |[/users](./back-end/api/users/users.js)|GET|{tokenIssurance, loginState, msg, token}
 
 <br><br>
 
-* 구현 내용
+* ### 구현 내용
   * passport-jwt 사용
     * refresh token 기술 사용
     * refresh token 발행, 조회되는 부분 model 개발
@@ -26,7 +26,7 @@
   * join 시 DB에 비밀번호 bcrypt 모듈로 암호화 진행 후 올림
 #
 
-* 구현 예정
+* ### 구현 예정
   * CRUD 게시판
   * token 블랙리스트
   * db 접근이 많을 때 최적화 방법 고안
