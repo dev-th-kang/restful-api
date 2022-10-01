@@ -5,8 +5,8 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const routes = express.Router();
 require('dotenv').config()
-const TOKEN_SECRET = toString(process.env.secret);
-const TOKEN_TYPE = toString(process.env.token_type);
+const SECRET = process.env.secret;
+const TOKEN_TYPE = process.env.token_type;
 // require('../../passport/serialize');
 // require('../../passport/passport')(passport);
 //FIXME: 로그인 JWT 포함하고, 토큰넘겨주기 
@@ -23,8 +23,8 @@ routes.post('/', (req,res)=>{
                     "username":value.username,
                     "userid":value.userid
                 }
-                const accessToken = jwt.sign(payload,TOKEN_SECRET,{expiresIn:"10s"});
-                const refreshToken = jwt.sign(payload,TOKEN_SECRET,{expiresIn:"1h"});
+                const accessToken = jwt.sign(payload,SECRET,{expiresIn:"10s"});
+                const refreshToken = jwt.sign(payload,SECRET,{expiresIn:"1h"});
                 token.refreshTokenSave(userid,refreshToken)
                 .then(console.log)
                 .catch(console.log)

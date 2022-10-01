@@ -11,6 +11,8 @@ module.exports = {
         console.log(sql);
         db.query(sql,(err,rows)=>{
         //console.log(rows);
+            if(err)
+                reject(false);
             if(rows.length){
                 resolve(rows[0]);
             }else{

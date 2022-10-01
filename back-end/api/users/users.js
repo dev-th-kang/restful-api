@@ -7,10 +7,10 @@ const JwtStrategy = require('passport-jwt').Strategy,
     ExtractJwt = require('passport-jwt').ExtractJwt;
 const opts = {}
 require('dotenv').config()
-const TOKEN_SECRET = toString(process.env.secret);
-const TOKEN_TYPE = toString(process.env.token_type);
+const SECRET = process.env.secret;
+const TOKEN_TYPE = process.env.token_type;
 opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
-opts.secretOrKey = TOKEN_SECRET;
+opts.secretOrKey = SECRET;
 // opts.issuer = 'accounts.examplesoft.com';
 // opts.audience = 'yoursite.net';
 // routes.get('/',(req,res,next)=>{
@@ -22,9 +22,9 @@ opts.secretOrKey = TOKEN_SECRET;
 //     }
 //     else res.send({"checkLoginStatus":false})
 // })
-function verifyToken(tokenValue, secret){
+function verifyToken(tokenValue){
     try{
-        return jwt.verify(tokenValue,secret)
+        return jwt.verify(tokenValue,SECRET)
     }catch(error){
         return error.message;
     }
@@ -51,14 +51,15 @@ routes.get('/',(req,res,next)=>{
             return;
         }
         try{
-            if(verifyToken(tokenValue,"secret")=="jwt expired"){
+            if(verifyToken(tokenValue)=="jwt expired"){
                 //refreshToken 으로 accessToken 재발행 절차 실행
-                const decodeToken = jwt.decode(tokenValue,TOKEN_SECRET);
+                const decodeToken = jwt.decode(tokenValue,SECRET);
+                console.log(decodeToken)
                 token.getRefreshToken(decodeToken.userid)
                 .then((refreshToken)=>{
                     //refresh token이 존재할떄
                     console.log(refreshToken);
-                    if(verifyToken(refreshToken,"secret") == "jwt expired"){
+                    if(verifyToken(refreshToken,SECRET) == "jwt expired"){
                         res.status(401).send({
                             tokenIssurance: false,
                             loginState: false,
@@ -67,7 +68,7 @@ routes.get('/',(req,res,next)=>{
                         return;
                     }else{
                         //토큰발행
-                        const newToken = jwt.sign({username:decodeToken.username,userid:decodeToken.userid},TOKEN_SECRET,{expiresIn:'10s'});
+                        const newToken = jwt.sign({username:decodeToken.username,userid:decodeToken.userid},SECRET,{expiresIn:'10s'});
                         req.headers["authorization"] = "Bearer " + newToken
                         res.status(200).send({
                             tokenIssurance: true,
@@ -77,7 +78,16 @@ routes.get('/',(req,res,next)=>{
                     }
 
                 })
-            }else{
+                .catch(()=>{
+                    res.status(401).send({
+                        tokenIssurance: false,
+                        loginState: false,
+                        msg:"다시 로그인이 필요합니다.3"
+                    })
+                })
+            }else{ 
+                // 오류 발생/ 유효하는 키인지
+                jwt.verify(tokenValue,SECRET);
                 // 로그인 완료;
                 res.status(200).send({
                     tokenIssurance: true,
