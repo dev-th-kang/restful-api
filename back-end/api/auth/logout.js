@@ -10,12 +10,15 @@ routes.post('/',(req,res,next)=>{
     const accessToken = req.headers['authorization'];
     const [tokenType,tokenValue] = accessToken.split(' ')
     const decodeToken = jwt.decode(tokenValue,SECRET)
+    console.log("등장")
     token.revokeRefreshToken(decodeToken.userid)
     .then((value)=>{
-        res.send("삭제성공!");
+        res.send({msg:"삭제성공!"});
+        return;
     })
     .catch((value)=>{
-        res.send("삭제실패");
+        res.send({msg:"삭제실패"});
+        return;
 
     })
     //token.revokeRefreshToken()

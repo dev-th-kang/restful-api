@@ -71,7 +71,8 @@ routes.get('/',(req,res,next)=>{
                         const newToken = jwt.sign({username:decodeToken.username,userid:decodeToken.userid},SECRET,{expiresIn:'10s'});
                         req.headers["authorization"] = "Bearer " + newToken
                         res.status(200).send({
-                            tokenIssurance: true,
+                            tokenIssurance: false,
+                            newTokenIssurance:true,
                             token:TOKEN_TYPE+" "+ newToken,
                             msg:"succeed get newToken"
                         })
@@ -92,7 +93,8 @@ routes.get('/',(req,res,next)=>{
                 res.status(200).send({
                     tokenIssurance: true,
                     loginState: true,
-                    msg:`${user}님이 로그인에 성공하였습니다.`
+                    info:user,
+                    msg:`${user.userid}님이 로그인에 성공하였습니다.`
                 })
             }
         }catch(err){
@@ -110,7 +112,7 @@ passport.use(new JwtStrategy(opts, (jwt_payload, done)=> {
     console.log(jwt_payload)
     user.findUser(jwt_payload.userid)
     .then((value)=>{
-        return done(null,jwt_payload.userid)
+        return done(null,{username:value.username, userid:value.userid})
     })
     .catch((value)=>{
         return done(null,false)
