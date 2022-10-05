@@ -57,5 +57,9 @@ npm install jsonwebtoken --save
 * login 형태 최적화
 * res.send 형태 정형화 시키기, 세부정보, 필요한 정보 추려서 넘기기
 * CRUD 게시판 api 추가 개발
+  * 게시판에 대한 권한
+    * 글쓰기 권한
+    * 읽기 권한
 * refresh Token 보안성 검사
 * jwt 를 쓰면서 로그아웃을 하는 방식 고안
+  * 현재 refresh 토큰은 서버에서 날리고, 클라이언트에서 accessToken을 날림. 블랙리스트관련 기능 공부중 
