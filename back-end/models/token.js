@@ -16,7 +16,24 @@ module.exports = {
         sql = `select * from saveToken where userid = "${userid}"`;
         db.query(sql,(err,result)=>{
             if(result.length) resolve(result[0].refreshToken);
+<<<<<<< HEAD
             else reject("false");
         })
     })
+=======
+            else reject(false);
+        })
+    }),
+    revokeRefreshToken:(userid)=>new Promise((resolve, reject)=>{
+        sql = `delete from saveToken where userid = "${userid}"`
+        db.query(sql, (err,result)=>{
+            if(result.affectedRows){
+                resolve(true);
+            }else{
+                reject(false);
+            }
+        })
+    })
+
+>>>>>>> feature/crud_board
 }

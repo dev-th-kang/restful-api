@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="userinfo"></div>
+    <a href="index.htm">이전</a>
+    <script>
+        const token = sessionStorage.getItem("token");
+        const userinfo = document.querySelector('.userinfo')
+        function loginFunction(token){
+            fetch("http://localhost:3000/api/users", {
+                method: "GET",
+                headers: {
+                "Content-Type": "application/json",
+                "Authorization": token
+            },
+            })
+            .then((response) => response.json())
+            .then((data) =>{
+                console.log(data);
+                if(data.tokenIssurance == true){
+                    userinfo.innerHTML = 
+                    `<h3>${data.info.username}님 페이지입니다.</h3>`
+                }
+                if(data.newTokenIssurance == true){
+                    sessionStorage.setItem("token", data.token);
+                    loginFunction(data.token)
+                }
+            });
+        }
+        document.addEventListener('DOMContentLoaded',()=>{
+            console.log(token)
+            if(token == null){
+                alert("로그인이 필요한 페이지입니다.");
+                location.href = "./index.htm";
+                return;
+            }else   loginFunction(token)
+
+        })
+    </script>
+</body>
+</html>
