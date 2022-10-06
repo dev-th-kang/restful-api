@@ -1,16 +1,10 @@
 const routes = require('express').Router();
 const jwt = require('jsonwebtoken');
 const passport = require('passport');
-const token = require('../../models/token');
-const user = require('../../models/user');
-const JwtStrategy = require('passport-jwt').Strategy,
-    ExtractJwt = require('passport-jwt').ExtractJwt;
-const opts = {}
+const token = require('../../config/token');
 require('dotenv').config()
 const SECRET = process.env.secret;
 const TOKEN_TYPE = process.env.token_type;
-opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
-opts.secretOrKey = SECRET;
 // opts.issuer = 'accounts.examplesoft.com';
 // opts.audience = 'yoursite.net';
 // routes.get('/',(req,res,next)=>{
@@ -68,7 +62,7 @@ routes.get('/',(req,res,next)=>{
                         return;
                     }else{
                         //토큰발행
-                        const newToken = jwt.sign({username:decodeToken.username,userid:decodeToken.userid},SECRET,{expiresIn:'10s'});
+                        const newToken = jwt.sign({username:decodeToken.username,userid:decodeToken.userid},SECRET,{expiresIn:'10m'});
                         req.headers["authorization"] = "Bearer " + newToken
                         res.status(200).send({
                             tokenIssurance: false,
@@ -108,16 +102,6 @@ routes.get('/',(req,res,next)=>{
         
     })(req,res,next);
 })
-passport.use(new JwtStrategy(opts, (jwt_payload, done)=> {
-    console.log(jwt_payload)
-    user.findUser(jwt_payload.userid)
-    .then((value)=>{
-        return done(null,{username:value.username, userid:value.userid})
-    })
-    .catch((value)=>{
-        return done(null,false)
-    })
-}));
 
 
 module.exports = routes;

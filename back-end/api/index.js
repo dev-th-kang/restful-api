@@ -4,8 +4,11 @@ const login = require('./auth/login');
 const logout = require('./auth/logout');
 const users = require('./users/users');
 const posts = require('./posts/posts');
+const { route } = require('./posts/posts');
 const routes = express.Router();
 //const passport = new passport.Passport();
+//passport middleware
+require('../middleware/passport-jwt')
 
 //TODO: 사용자 api
 routes.use('/users',users);

@@ -1,10 +1,12 @@
-const db = require('../config/db')
+const db = require('./db')
 
 let sql;
 module.exports = {
     createPost:(data)=> new Promise((resolve,reject)=>{
         sql = `insert into board(userid,username,title,contents) values("${data[0]}","${data[1]}","${data[2]}","${data[3]}")` 
+        console.log(sql)
         db.query(sql,(err,results)=>{
+            if(err) reject(false)
             if(results.affectedRows)
                 resolve(true)
             else{

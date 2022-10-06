@@ -2,7 +2,7 @@ const express = require('express');
 const db = require('../../config/db');
 const routes = express.Router();
 const passport = require('passport');
-const user = require('../../models/user');
+const user = require('../../config/user');
 // require('../../passport/serialize');
 // require('../../passport/passport')(passport);
 
