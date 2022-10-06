@@ -1,4 +1,4 @@
-const db = require('../config/db');
+const db = require('./db');
 const bcrypt = require('bcrypt');
 require('dotenv').config()
 let sql;
@@ -11,11 +11,8 @@ module.exports = {
         console.log(sql);
         db.query(sql,(err,rows)=>{
         //console.log(rows);
-<<<<<<< HEAD
-=======
             if(err)
                 reject(false);
->>>>>>> feature/crud_board
             if(rows.length){
                 resolve(rows[0]);
             }else{

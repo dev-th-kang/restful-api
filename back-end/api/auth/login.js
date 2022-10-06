@@ -1,17 +1,12 @@
 const express = require('express');
-const user = require('../../models/user');
-const token = require('../../models/token');
+const user = require('../../config/user');
+const token = require('../../config/token');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const routes = express.Router();
 require('dotenv').config()
-<<<<<<< HEAD
-const TOKEN_SECRET = toString(process.env.secret);
-const TOKEN_TYPE = toString(process.env.token_type);
-=======
 const SECRET = process.env.secret;
 const TOKEN_TYPE = process.env.token_type;
->>>>>>> feature/crud_board
 // require('../../passport/serialize');
 // require('../../passport/passport')(passport);
 //FIXME: 로그인 JWT 포함하고, 토큰넘겨주기 
@@ -28,13 +23,8 @@ routes.post('/', (req,res)=>{
                     "username":value.username,
                     "userid":value.userid
                 }
-<<<<<<< HEAD
-                const accessToken = jwt.sign(payload,TOKEN_SECRET,{expiresIn:"10s"});
-                const refreshToken = jwt.sign(payload,TOKEN_SECRET,{expiresIn:"1h"});
-=======
-                const accessToken = jwt.sign(payload,SECRET,{expiresIn:"10s"});
+                const accessToken = jwt.sign(payload,SECRET,{expiresIn:"30m"});
                 const refreshToken = jwt.sign(payload,SECRET,{expiresIn:"1h"});
->>>>>>> feature/crud_board
                 token.refreshTokenSave(userid,refreshToken)
                 .then(console.log)
                 .catch(console.log)

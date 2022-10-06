@@ -1,16 +1,6 @@
 const express = require('express');
-<<<<<<< HEAD
-const routes = express.Router();
-
-//FIXME: passport로 로그아웃 진행
-routes.post('/',(req,res,next)=>{
-    req.logout((err)=>{
-        if(err) {return next(err)}
-        res.send('<alert>logout succeed</alert>')
-    })
-=======
 const jwt = require('jsonwebtoken');
-const token = require('../../models/token');
+const token = require('../../config/token');
 const routes = express.Router();
 require('dotenv').config();
 SECRET = process.env.secret
@@ -32,6 +22,5 @@ routes.post('/',(req,res,next)=>{
 
     })
     //token.revokeRefreshToken()
->>>>>>> feature/crud_board
 })
 module.exports = routes;

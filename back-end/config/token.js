@@ -1,4 +1,4 @@
-const db = require('../config/db');
+const db = require('./db');
 let sql;
 module.exports = {
     /** FIXME: refresh Token 발행도 여기서 진행하면 어떨까 생각중 */
@@ -16,11 +16,6 @@ module.exports = {
         sql = `select * from saveToken where userid = "${userid}"`;
         db.query(sql,(err,result)=>{
             if(result.length) resolve(result[0].refreshToken);
-<<<<<<< HEAD
-            else reject("false");
-        })
-    })
-=======
             else reject(false);
         })
     }),
@@ -35,5 +30,4 @@ module.exports = {
         })
     })
 
->>>>>>> feature/crud_board
 }
