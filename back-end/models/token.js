@@ -16,11 +16,6 @@ module.exports = {
         sql = `select * from saveToken where userid = "${userid}"`;
         db.query(sql,(err,result)=>{
             if(result.length) resolve(result[0].refreshToken);
-<<<<<<< HEAD
-            else reject("false");
-        })
-    })
-=======
             else reject(false);
         })
     }),
@@ -35,5 +30,4 @@ module.exports = {
         })
     })
 
->>>>>>> feature/crud_board
 }

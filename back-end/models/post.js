@@ -2,8 +2,16 @@ const db = require('../config/db')
 
 let sql;
 module.exports = {
-    createPost:()=> new Promise((resolve,reject)=>{
-        sql = `` 
+    createPost:(data)=> new Promise((resolve,reject)=>{
+        sql = `insert into board(userid,username,title,contents) values("${data[0]}","${data[1]}","${data[2]}","${data[3]}")` 
+        db.query(sql,(err,results)=>{
+            if(results.affectedRows)
+                resolve(true)
+            else{
+                reject(false)
+            }
+
+        })
     }),
     deletePost:()=> new Promise((resolve,reject)=>{
         sql = ``
@@ -11,10 +19,18 @@ module.exports = {
     updatePost:()=> new Promise((resolve,reject)=>{
         sql = ``
     }),
-    readPost:(user)=> new Promise((resolve,reject)=>{
-        sql = `select * from board where username`
+    readPost:(idx)=> new Promise((resolve,reject)=>{
+        
+        sql = `select * from board where idx = ${idx}`
+        db.query(sql,(err,rows)=>{
+            if(rows.length){
+                resolve(rows[0])
+            }else{
+                reject(false)
+            }
+        })
     }),
-    allPosts:(user)=> new Promise((resolve,reject)=>{
+    allPosts:()=> new Promise((resolve,reject)=>{
         sql = `select * from board `
         db.query(sql,(err,results)=>{
             if(results.length){
