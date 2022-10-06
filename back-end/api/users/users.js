@@ -94,7 +94,7 @@ routes.get('/',(req,res,next)=>{
                     tokenIssurance: true,
                     loginState: true,
                     info:user,
-                    msg:`${user.userid}님이 로그인에 성공하였습니다.`
+                    msg:`${user.userid}님이 인증에 성공하였습니다.`
                 })
             }
         }catch(err){

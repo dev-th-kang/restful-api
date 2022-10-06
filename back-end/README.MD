@@ -8,15 +8,11 @@ npm install jsonwebtoken --save
     * express 설치 및 서버 실행 테스트
 
 
-## 1차 예정 사항 (clear)
-#
-  * 데이터베이스 connection 구현(use mysql)
+* 1차 예정 사항
+  * 데이터베이스 pool 구현(use mysql)
   * 회원가입 api 구현
   * rest규정에 맞춰서 정리
   * 위의 구성과정 이후 passport 사용
-<br><br>
-### 세부진행
-#
 
 * DB 오류 발생시, 비밀번호를 변경해줘야한다. 아래 구문 이용 
     
@@ -46,16 +42,3 @@ npm install jsonwebtoken --save
     * passport-jwt 에서 accessToken 방식은 보안성이 저하되므로, main RefreshToken을 만들고 DB에 저장해서 accessToken 만료시간을 20초로 잡고 이후,만료때 마다 DB 요청으로 accessToken 재발행(속도적인 측면 이 약간 걱정됨.) DP 형태로 진행하면 어떨까봄. refreshToken 값을 json 화해서 server에 두고, 만약 json 화된 파일안에 refresh 토큰이 아직 만료되지않으면, 그냥 바로 진행해버리고, 만료되면 db에서 확인해서 만료되지않은 refresh 토큰이 있는지 확인
     * 현재 logout이 jwt 특성상 매끄럽게 진행되지않음. **토큰 블랙리스트** 기법을 참조해볼 예정(클라이언트에서 logout시 토큰을 날려도되지만, 서버에서 진행하는게 더 좋을거같음. 시도해보려고함)
     * bcrypt 방식으로 DB에 넣을때 비밀번호 암호화 진행.
-    * token 관련정보 .env 를 통해서 보안성 강화
-    * 현재 속도 측면과, refreshToken이 정말 안전한지 확인해야할것 같음
-  
-  > 인증 api가 거의 완성되었으므로, CRUD api 개발진행하기
-
-<br><br>
-## 2차 예정사항
-#
-* login 형태 최적화
-* res.send 형태 정형화 시키기, 세부정보, 필요한 정보 추려서 넘기기
-* CRUD 게시판 api 추가 개발
-* refresh Token 보안성 검사
-* jwt 를 쓰면서 로그아웃을 하는 방식 고안
