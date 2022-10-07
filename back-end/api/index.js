@@ -2,7 +2,7 @@ const express = require('express');
 const join = require('./auth/join');
 const login = require('./auth/login');
 const logout = require('./auth/logout');
-const users = require('./users/users');
+const auth = require('./auth/auth');
 const posts = require('./posts/posts');
 const { route } = require('./posts/posts');
 const routes = express.Router();
@@ -11,7 +11,7 @@ const routes = express.Router();
 require('../middleware/passport-jwt')
 
 //TODO: 사용자 api
-routes.use('/users',users);
+routes.use('/auth',auth);
 
 //TODO: 인증 파트
 routes.use('/auth/join', join);

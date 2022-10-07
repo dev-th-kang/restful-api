@@ -23,7 +23,7 @@ routes.post('/', (req,res)=>{
                     "username":value.username,
                     "userid":value.userid
                 }
-                const accessToken = jwt.sign(payload,SECRET,{expiresIn:"30m"});
+                const accessToken = jwt.sign(payload,SECRET,{expiresIn:"10s"});
                 const refreshToken = jwt.sign(payload,SECRET,{expiresIn:"1h"});
                 token.refreshTokenSave(userid,refreshToken)
                 .then(console.log)

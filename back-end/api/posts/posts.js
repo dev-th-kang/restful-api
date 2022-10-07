@@ -42,10 +42,9 @@ routes.post('/',passport.authenticate('jwt',{session:false}),(req,res,next)=>{
 })
 /** TODO:  게시물 전체 조회 */
 routes.get('/',(req,res)=>{
-    console.log("asd")
     if(req.query.idx==null){
         if(req.query.idx == null){
-            post.allPosts()
+            post.readPosts()
             .then((values)=>{
                 res.status(200).send(values)
             })
@@ -72,12 +71,29 @@ routes.get('/',(req,res)=>{
     }
 })
 /** TODO: 게시물 수정 */
-routes.put('/',(req,res)=>{
-
+routes.put('/',passport.authenticate('jwt',{session:false}),(req,res)=>{
+    const [tokenType,tokenValue] = req.headers["authorization"].split(' ')
+    const decodeToken = jwt.decode(tokenValue,SECRET);
+    
+    post.updatePost(req.query.idx,decodeToken.userid,req.body)
+        .then(()=>{
+            res.send({"msg": "update good"});
+        })
+        .catch(()=>{
+            res.send({"msg": "update nop!"});
+        })
 })
 /** TODO: 게시물 삭제 */
-routes.delete('/',(req,res)=>{
-
+routes.delete('/',passport.authenticate('jwt',{session:false}),(req,res)=>{
+    const [tokenType,tokenValue] = req.headers["authorization"].split(' ')
+    const decodeToken = jwt.decode(tokenValue,SECRET);
+    post.deletePost(req.query.idx,decodeToken.userid)
+        .then(()=>{
+            res.send({"msg": "delete good"});
+        })
+        .catch(()=>{
+            res.send({"msg": "delete nop!"});
+        })
 })
 
 module.exports = routes;
