@@ -1,4 +1,4 @@
-const db = require('../config/db');
+const db = require('./db');
 let sql;
 module.exports = {
     /** FIXME: refresh Token 발행도 여기서 진행하면 어떨까 생각중 */

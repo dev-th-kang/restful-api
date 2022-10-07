@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input type="text" class="title" placeholder="title"><br>
+    <textarea class="ct" rows="5" cols="30" name="contents"></textarea>
+    <button class = "btn">asd</button>
+    <script>
+        const token = sessionStorage.getItem("token");
+        function loginFunction(t){
+            fetch("http://localhost:3000/api/auth", {
+                method: "GET",
+                headers: {
+                "Content-Type": "application/json",
+                "Authorization": t
+            },
+            })
+            .then((response) => response.json())
+            .then((data) =>{
+                console.log("asd");
+                if(data.newTokenIssurance == true){
+                    sessionStorage.setItem("token", data.token);
+                    //loginFunction(data.token)
+                }
+            });
+        }
+        document.querySelector('.btn').addEventListener('click',()=>{
+            if(token == null){
+                alert("로그인이 필요한 페이지입니다.");
+                location.href = "./index.htm";
+                return;
+            }else loginFunction(token)
+            console.log('asd')
+            const contents = document.querySelector('.ct').value;
+            const ct = contents.replace("\n","<br>")
+            fetch("http://localhost:3000/api/posts", {
+                method: "POST",
+                headers: {
+                "Content-Type": "application/json",
+                "Authorization": token
+            },body: JSON.stringify({
+                "title":document.querySelector('.title').value,
+                "contents":ct
+            }),
+            })
+            .then((response) => response.json())
+            .then((data) =>{
+                console.log(data);
+                location.href = "./protected.htm";
+                alr
+            });
+        })
+    </script>
+</body>
+</html>

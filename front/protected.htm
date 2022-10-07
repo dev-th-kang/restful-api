@@ -9,11 +9,17 @@
 <body>
     <div class="userinfo"></div>
     <a href="index.htm">이전</a>
+    <a href="createboard.htm">글쓰기</a>
+    <div class="board_list">
+        
+
+    </div>
     <script>
         const token = sessionStorage.getItem("token");
         const userinfo = document.querySelector('.userinfo')
+        const board_list = document.querySelector('.board_list')
         function loginFunction(token){
-            fetch("http://localhost:3000/api/users", {
+            fetch("http://localhost:3000/api/auth", {
                 method: "GET",
                 headers: {
                 "Content-Type": "application/json",
@@ -40,6 +46,28 @@
                 location.href = "./index.htm";
                 return;
             }else   loginFunction(token)
+
+
+            fetch("http://localhost:3000/api/posts", {
+                method: "GET",
+                headers: {
+                "Content-Type": "application/json",
+                "Authorization": token
+            },
+            })
+            .then((response) => response.json())
+            .then((data) =>{
+                for(var i= 0; i< data.length;i++){
+                    board_list.innerHTML += `
+                        <hr>
+                        <small>no : ${data[i].idx}</small>
+                        <h2><a href="./board.htm?idx=${data[i].idx}">title : ${data[i].title}</a></h2>
+                        <small>작성자 :  ${data[i].username}</small>
+                        <hr>
+                    `
+                    console.log(data[i])
+                }
+            });
 
         })
     </script>

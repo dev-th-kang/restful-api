@@ -1,6 +1,6 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
-const token = require('../../models/token');
+const token = require('../../config/token');
 const routes = express.Router();
 require('dotenv').config();
 SECRET = process.env.secret
