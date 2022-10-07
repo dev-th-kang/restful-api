@@ -62,7 +62,7 @@ routes.get('/',(req,res,next)=>{
                         return;
                     }else{
                         //토큰발행
-                        const newToken = jwt.sign({username:decodeToken.username,userid:decodeToken.userid},SECRET,{expiresIn:'10m'});
+                        const newToken = jwt.sign({username:decodeToken.username,userid:decodeToken.userid},SECRET,{expiresIn:'10s'});
                         req.headers["authorization"] = "Bearer " + newToken
                         res.status(200).send({
                             tokenIssurance: false,

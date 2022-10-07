@@ -1,5 +1,16 @@
 const db = require('./db')
+function updateIdx(){
+/*
+alter table board auto_increment=1;set @count =0;update board set idx = @count:=@count+1;
+*/
 
+    const sql1 =`alter table board auto_increment=1;`
+    const sql2 =`set @count =0;`
+    const sql3 =`update board set idx = @count:=@count+1;1
+    `
+    db.query(sql1+sql2+sql3,(err,results)=>console.log("recounting good"))
+    return;
+}
 let sql;
 module.exports = {
     createPost:(data)=> new Promise((resolve,reject)=>{
@@ -7,19 +18,44 @@ module.exports = {
         console.log(sql)
         db.query(sql,(err,results)=>{
             if(err) reject(false)
-            if(results.affectedRows)
+            if(results.affectedRows){                
+                updateIdx();
                 resolve(true)
+            }
             else{
                 reject(false)
             }
 
         })
     }),
-    deletePost:()=> new Promise((resolve,reject)=>{
-        sql = ``
+    deletePost:(idx,userid)=> new Promise((resolve,reject)=>{
+        sql = `delete from board where idx = ${idx} && userid = "${userid}"`
+        console.log(sql)
+        db.query(sql,(err,results)=>{
+            if(err)reject(false);
+            if(results.affectedRows){
+                updateIdx();
+                resolve(true);
+            }else{
+                reject(false);
+            }
+        })
     }),
-    updatePost:()=> new Promise((resolve,reject)=>{
-        sql = ``
+    updatePost:(idx,userid, chgcontent)=> new Promise((resolve,reject)=>{
+        
+        sql = `update board set title="${chgcontent.title}", contents = "${chgcontent.contents}" where idx = ${idx} and userid="${userid}"`
+        console.log(sql)
+        db.query(sql,(err, results)=>{
+            if(err) {
+                reject(false);
+            }
+            if(results.affectedRows){
+                resolve(true);
+            }else{
+                reject(false);
+            }
+        })
+
     }),
     readPost:(idx)=> new Promise((resolve,reject)=>{
         
@@ -32,7 +68,7 @@ module.exports = {
             }
         })
     }),
-    allPosts:()=> new Promise((resolve,reject)=>{
+    readPosts:()=> new Promise((resolve,reject)=>{
         sql = `select * from board `
         db.query(sql,(err,results)=>{
             if(results.length){

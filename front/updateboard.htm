@@ -10,27 +10,28 @@
     <div class="contents">
 
     </div>
-    <a href="./protected.htm">back</a>
     <script>
         const token = sessionStorage.getItem("token");
         let idx = null;
         function updateBoard(){
-            location.href = './updateboard.htm?idx=${idx}'
-            
-        }
-        function deleteBoard(){
+            const b_title = document.querySelector('.b_title').value;
+            const b_contents = document.querySelector('.b_contents').value;
             fetch(`http://localhost:3000/api/posts?idx=${idx}`, {
-                method: "DELETE",
+                method: "PUT",
                 headers: {
                 "Content-Type": "application/json",
                 "Authorization": token
             },
+            body:JSON.stringify({
+                title:b_title,
+                contents:b_contents
+            })
             })
             .then((response) => response.json())
             .then((data) =>{
-                if(data.msg == "delete good"){
-                    alert("삭제가 완료되었습니다.")
-                    location.href = "protected.htm"
+                if(data.msg = "update good"){
+                    alert("update가 완료되었습니다.");
+                    location.href = "./board.htm?idx="+idx;
                 }
             });
         }
@@ -52,13 +53,13 @@
                 const contents = document.querySelector('.contents')
                 contents.innerHTML=
                 `
-                ${data.idx}번 게시물
-                <h1>title : ${data.title}</h1>
+                ${data.idx}번 게시물<br>
+                <input type="text" class="b_title" value="${data.title}">
+                <br>
                 <small>date : ${data.date}</small>
                 <h3>username : ${data.username}</h3>
-                <h3>contents : ${data.contents}</h3>
-                <a href="javascript:updateBoard()">수정</a> <a href="javascript:deleteBoard()">삭제</a>
-                `
+                <textarea class="b_contents"> ${data.contents}</textarea>
+                <a href="javascript:updateBoard()">완료</a>`
             });
         })
     </script>
